@@ -12,15 +12,17 @@ import Network.Wai
 import Network.Wai.Handler.Warp
 import Servant
 
-data User = User
-  { userId        :: Int
-  , userFirstName :: String
-  , userLastName  :: String
+import Data.Text
+
+data Callback = Callback
+  { 
+    callbackName  :: Text
+  , callbackPhone :: Text
   } deriving (Eq, Show)
 
-$(deriveJSON defaultOptions ''User)
+$(deriveJSON defaultOptions ''Callback)
 
-type API = "users" :> Get '[JSON] [User]
+type API = "callback" :> ReqBody '[JSON] Callback :> Post '[JSON] () 
 
 startApp :: IO ()
 startApp = run 8080 app
@@ -32,9 +34,7 @@ api :: Proxy API
 api = Proxy
 
 server :: Server API
-server = return users
+server = postCallback
 
-users :: [User]
-users = [ User 1 "Isaac" "Newton"
-        , User 2 "Albert" "Einstein"
-        ]
+postCallback :: Callback -> Handler ()
+postCallback _ = return ()

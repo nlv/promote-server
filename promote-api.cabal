@@ -21,6 +21,7 @@ library
                      , servant-server
                      , wai
                      , warp
+                     , text
   default-language:    Haskell2010
 
 executable promote-api-exe
@@ -29,6 +30,7 @@ executable promote-api-exe
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , promote-api
+                     , text
   default-language:    Haskell2010
 
 test-suite promote-api-test
