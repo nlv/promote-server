@@ -5,6 +5,7 @@ module Config (
   ConfigApp(..)
 , ConfigTls(..)
 , ConfigServer(..)
+, ConfigTelegram(..)
 , loadConfig
 , Opts(..)
 , getOpts
@@ -20,6 +21,7 @@ import Data.Semigroup ((<>))
 data ConfigApp = ConfigApp {
   tls       :: ConfigTls
 , server    :: ConfigServer
+, telegram  :: ConfigTelegram
 } deriving (Generic, Show)
 instance Dh.Interpret ConfigApp
 
@@ -33,6 +35,12 @@ data ConfigServer = ConfigServer {
   port :: Dh.Natural
 } deriving (Generic, Show)
 instance Dh.Interpret ConfigServer
+
+data ConfigTelegram = ConfigTelegram {
+  token   :: String  
+, chat_id :: Dh.Natural
+} deriving (Generic, Show)
+instance Dh.Interpret ConfigTelegram
 
 loadConfig :: Text -> IO (ConfigApp)
 loadConfig = Dh.input Dh.auto

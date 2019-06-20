@@ -5,7 +5,7 @@
 
 module Lib
     ( startApp
-    , app
+    -- , app
     ) where
 
 import Data.Text
@@ -22,6 +22,8 @@ import Network.Wai.Middleware.RequestLogger (logStdoutDev)
 import Network.Wai.Middleware.Static
 import Network.Wai.Handler.WarpTLS
 import qualified Network.HTTP.Types as HTTP
+import Network.HTTP.Base (urlEncode)
+import Network.Curl
 
 import qualified Config as Cfg
 import Servant
@@ -41,9 +43,9 @@ type CallbackAPI = "callback" :> ReqBody '[JSON] Callback :> Post '[JSON] ()
 -- startApp :: IO ()
 -- startApp = run 8080 app
 
-app :: Application
--- app = serve api server
-app = (cors corsPolicy) $ (serve api $ server)
+-- app :: Application
+-- -- app = serve api server
+-- app = (cors corsPolicy) $ (serve api $ server)
 
 api :: Proxy API
 api = Proxy
@@ -54,17 +56,14 @@ corsPolicy _ = Just $ simpleCorsResourcePolicy
   , corsMethods = HTTP.methodPost : HTTP.methodOptions : HTTP.methodPut : corsMethods simpleCorsResourcePolicy
   }
   
-
-
-
-server :: Server API
-server = postCallback
-
 startApp :: IO ()
 startApp = do
   opts <- Cfg.getOpts
   config <- Cfg.loadConfig (Cfg.configFile opts)
   let serverCfg = Cfg.server config
+  let telegramCfg = Cfg.telegram config
+  let telegramToken = Cfg.token telegramCfg
+  let telegramChatId = fromIntegral $ Cfg.chat_id telegramCfg
   -- let url = pack $ Cfg.url serverCfg
   let port = fromIntegral (Cfg.port serverCfg)
   let crtFile = Cfg.crtFile $ Cfg.tls config
@@ -75,15 +74,30 @@ startApp = do
         defaultSettings
       tlsOpts = tlsSettings crtFile keyFile
   -- runTLS tlsOpts warpOpts =<< mkApp
-  runSettings warpOpts =<< mkApp
+  runSettings warpOpts =<< mkApp telegramToken telegramChatId
 
 
-mkApp :: IO Application
-mkApp = return $ (cors corsPolicy) $ static $ (serve api server)
+mkApp :: String -> Int -> IO Application
+mkApp tmToken tmChatId = return $ (cors corsPolicy) $ static $ (serve api $ server tmToken tmChatId)
   
+server :: String -> Int -> Server API
+server = postCallback
 
-
-postCallback :: Callback -> Handler ()
-postCallback c = do
+postCallback :: String -> Int -> Callback -> Handler ()
+postCallback tmToken tmChatId c = do
+  let message = "Заявка. " 
+         ++ " Имя: " ++ (unpack $ callbackName c)
+         ++ " Телефон: " ++ (unpack $ callbackPhone c)
+      url = "https://api.telegram.org/bot" 
+         ++ tmToken 
+         ++ "/sendMessage?chat_id="
+         ++ (show tmChatId)
+         ++ "parse_mode=html&text="
+         ++ message
   liftIO $ putStrLn $ "post: " ++ show c
+  -- liftIO $ curlGet (urlEncode url) []
+  r <- liftIO $ curlGetResponse (url) []
+  liftIO $ putStrLn $ "telegram resultcurlCode: " ++ (show $ respCurlCode r)
+  liftIO $ putStrLn $ "telegram resultStatus: " ++ (show $ respStatus r)
+  liftIO $ putStrLn $ "telegram resultStatusLine: " ++ (show $ respStatusLine r)
   return ()

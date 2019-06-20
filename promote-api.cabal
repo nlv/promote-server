@@ -28,6 +28,8 @@ library
                      , wai-middleware-static
                      , wai-extra
                      , http-types
+                     , HTTP
+                     , curl
                      , dhall
                      , optparse-applicative
   default-language:    Haskell2010
