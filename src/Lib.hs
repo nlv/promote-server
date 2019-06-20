@@ -74,8 +74,8 @@ startApp = do
         setBeforeMainLoop (hPutStrLn stderr ("listening on port " ++ show port)) $
         defaultSettings
       tlsOpts = tlsSettings crtFile keyFile
-  runTLS tlsOpts warpOpts =<< mkApp
-  -- runServer warpOpts =<< mkApp
+  -- runTLS tlsOpts warpOpts =<< mkApp
+  runSettings warpOpts =<< mkApp
 
 
 mkApp :: IO Application
