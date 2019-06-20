@@ -5,3 +5,4 @@ config.dhall
 crt.txt
 private-key.txt
 static/images/petitions/
+site/
