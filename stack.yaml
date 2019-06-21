@@ -17,7 +17,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: lts-13.25
+resolver: lts-8.12
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -39,7 +39,29 @@ packages:
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
-# extra-deps: []
+extra-deps: 
+  - tls-1.4.1
+  - opaleye-0.6.7003.0
+  - postgresql-simple-0.5.4.0@sha256:d4c28e2e4c4136dfff0bc415c05b28c04089f6b92e7ede2b45a379e1e393ef5e
+  - dhall-1.19.1@sha256:071e99c9d220c1a8ba9333ecc7b3838e804545b522393b4f11652bd46f62358c
+  - ansi-terminal-0.6.3.1@sha256:bd858414c12857a368adc624639027eb0a680502af3019989d3ac39c155930f3
+  - cborg-0.2.1.0@sha256:6e2c9a4dc3ccd621d799689d6c3ff862c761ffbab4da104874ba04a14c60ac7a
+  - cryptonite-0.25@sha256:6942644686c4e316c9f312b51151caba779e35f15fb666d255c802b1a84067ae
+  - dotgen-0.4.2@sha256:309b7cc8a3593a8e48bee7b53020d5f72db156d58edf78a0214f58fbb84b292b
+  - megaparsec-7.0.4@sha256:a7397151601cbe6b8f831f8bdad1a10118dcd6d9a7ee50d6bbdcfbd1181b4ba2
+  - optparse-applicative-0.14.3.0@sha256:b6b56a922d10911a2824b965750ddc7794de746e347afe67f1a84d05168368dc
+  - prettyprinter-1.2.1@sha256:69856d061c602917d578190265edb62b14f63a2e02bcc565adf31146f903a45b
+  - prettyprinter-ansi-terminal-1.1.1.2@sha256:f4bc019f73f8721a628b36bfca80b4d721886f3d05c8f80117ed75d8b6878ea3
+  - repline-0.2.0.0@sha256:0ebbf9a59edb60eeac7e002971d501a81ef633b2dc4db3908d27f30f95e4eac1
+  - serialise-0.2.1.0@sha256:8d6051f64c6ebfaf705195dd0b8dfb667617f2e674b290ed2e44985009e4f951
+  - basement-0.0.8@sha256:5eaa84a8395afc00751918adbde4db66b05e7126caf20779c0ddf4b94c23bc00
+  - memory-0.14.18@sha256:f55301417e1c5a43b055d1f0d3e88abe895d15a3e9d49889af634fb4b7028d40
+  - parser-combinators-1.0.0@sha256:7374d14cd3b38af0c7f7333049d6af1ccbbe6009deaa66e18701c2194e48f253
+  - x509-1.7.5@sha256:01185a9a17bee4e89287d9e32bfaa673133cf2b09a39759627bed1f72ea528fd
+  - x509-store-1.6.7
+  - x509-system-1.6.6
+  - x509-validation-1.6.11
+
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
