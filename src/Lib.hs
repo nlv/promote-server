@@ -93,9 +93,8 @@ postCallback tmToken tmChatId c = do
          ++ "/sendMessage?chat_id="
          ++ (show tmChatId)
          ++ "parse_mode=html&text="
-         ++ message
+         ++ (urlEncode message)
   liftIO $ putStrLn $ "post: " ++ show c
-  -- liftIO $ curlGet (urlEncode url) []
   r <- liftIO $ curlGetResponse (url) []
   liftIO $ putStrLn $ "telegram resultcurlCode: " ++ (show $ respCurlCode r)
   liftIO $ putStrLn $ "telegram resultStatus: " ++ (show $ respStatus r)
