@@ -1,0 +1,13 @@
+{ useTls = True
+, tls = 
+    { crtFile = "SSL-Public-Key.txt" 
+    , keyFile = "SSL-Private-Key.txt"
+    }
+, server =
+    { port = 8080
+    }
+, telegram =
+    { token = "..."
+    , chat_id = 0
+    }
+}
