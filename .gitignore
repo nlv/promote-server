@@ -1,8 +1,2 @@
 .stack-work/
-petitions-api.cabal
-config-localhost.dhall
 config.dhall
-crt.txt
-private-key.txt
-static/images/petitions/
-site/

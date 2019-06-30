@@ -19,7 +19,8 @@ import Options.Applicative
 import Data.Semigroup ((<>))
 
 data ConfigApp = ConfigApp {
-  useTls    :: Bool
+  basePath  :: String
+, useTls    :: Bool
 , tls       :: ConfigTls
 , server    :: ConfigServer
 , telegram  :: ConfigTelegram

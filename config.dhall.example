@@ -1,4 +1,5 @@
-{ useTls = True
+{ basePath = "/opt/my/site"
+, useTls = True
 , tls = 
     { crtFile = "SSL-Public-Key.txt" 
     , keyFile = "SSL-Private-Key.txt"

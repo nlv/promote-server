@@ -40,13 +40,6 @@ $(deriveJSON defaultOptions ''Callback)
 type API = "api" :> CallbackAPI
 type CallbackAPI = "callback" :> ReqBody '[JSON] Callback :> Post '[JSON] () 
 
--- startApp :: IO ()
--- startApp = run 8080 app
-
--- app :: Application
--- -- app = serve api server
--- app = (cors corsPolicy) $ (serve api $ server)
-
 api :: Proxy API
 api = Proxy
 
@@ -55,6 +48,7 @@ corsPolicy _ = Just $ simpleCorsResourcePolicy
   { corsRequestHeaders = ["Content-Type"]
   , corsMethods = HTTP.methodPost : HTTP.methodOptions : HTTP.methodPut : corsMethods simpleCorsResourcePolicy
   }
+
   
 startApp :: IO ()
 startApp = do
@@ -64,21 +58,29 @@ startApp = do
   let telegramCfg = Cfg.telegram config
   let telegramToken = Cfg.token telegramCfg
   let telegramChatId = fromIntegral $ Cfg.chat_id telegramCfg
-  -- let url = pack $ Cfg.url serverCfg
   let port = fromIntegral (Cfg.port serverCfg)
   let crtFile = Cfg.crtFile $ Cfg.tls config
   let keyFile = Cfg.keyFile $ Cfg.tls config
   let useTls = Cfg.useTls config
+  let basePath = Cfg.basePath config
       warpOpts =
         setPort port $
         setBeforeMainLoop (hPutStrLn stderr ("listening on port " ++ show port)) $
         defaultSettings
       tlsOpts = tlsSettings crtFile keyFile
-  if useTls then runTLS tlsOpts warpOpts =<< mkApp telegramToken telegramChatId
-            else runSettings warpOpts =<< mkApp telegramToken telegramChatId
+  if useTls then runTLS tlsOpts warpOpts =<< mkApp basePath telegramToken telegramChatId
+            else runSettings warpOpts =<< mkApp basePath telegramToken telegramChatId
 
-mkApp :: String -> Int -> IO Application
-mkApp tmToken tmChatId = return $ (cors corsPolicy) $ static $ (serve api $ server tmToken tmChatId)
+appStatic :: String -> Middleware
+appStatic basePath = 
+  let route' = [("", "index.html"), ("smm", "promote-social.html")] 
+      route = Prelude.map (\(a, b) -> (a, basePath ++ "/" ++ b)) route'
+  in 
+    staticPolicy $ only route <|> addBase basePath
+
+mkApp :: String -> String -> Int -> IO Application
+mkApp basePath tmToken tmChatId = 
+  return $ (cors corsPolicy) $ appStatic basePath $ (serve api $ server tmToken tmChatId)
   
 server :: String -> Int -> Server API
 server = postCallback
