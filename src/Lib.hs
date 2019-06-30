@@ -68,14 +68,14 @@ startApp = do
   let port = fromIntegral (Cfg.port serverCfg)
   let crtFile = Cfg.crtFile $ Cfg.tls config
   let keyFile = Cfg.keyFile $ Cfg.tls config
+  let useTls = Cfg.useTls config
       warpOpts =
         setPort port $
         setBeforeMainLoop (hPutStrLn stderr ("listening on port " ++ show port)) $
         defaultSettings
       tlsOpts = tlsSettings crtFile keyFile
-  -- runTLS tlsOpts warpOpts =<< mkApp
-  runSettings warpOpts =<< mkApp telegramToken telegramChatId
-
+  if useTls then runTLS tlsOpts warpOpts =<< mkApp telegramToken telegramChatId
+            else runSettings warpOpts =<< mkApp telegramToken telegramChatId
 
 mkApp :: String -> Int -> IO Application
 mkApp tmToken tmChatId = return $ (cors corsPolicy) $ static $ (serve api $ server tmToken tmChatId)
