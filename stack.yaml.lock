@@ -19,13 +19,6 @@ packages:
   original:
     hackage: opaleye-0.6.7003.0
 - completed:
-    hackage: postgresql-simple-0.5.4.0@sha256:d4c28e2e4c4136dfff0bc415c05b28c04089f6b92e7ede2b45a379e1e393ef5e,3986
-    pantry-tree:
-      size: 3771
-      sha256: 7c2164b40efe539cc23a15d2d40de021757980419a9eef26440ba81cc4a32e57
-  original:
-    hackage: postgresql-simple-0.5.4.0@sha256:d4c28e2e4c4136dfff0bc415c05b28c04089f6b92e7ede2b45a379e1e393ef5e
-- completed:
     hackage: dhall-1.19.1@sha256:071e99c9d220c1a8ba9333ecc7b3838e804545b522393b4f11652bd46f62358c,22183
     pantry-tree:
       size: 71899

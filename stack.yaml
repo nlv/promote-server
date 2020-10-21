@@ -42,7 +42,6 @@ packages:
 extra-deps: 
   - tls-1.4.1
   - opaleye-0.6.7003.0
-  - postgresql-simple-0.5.4.0@sha256:d4c28e2e4c4136dfff0bc415c05b28c04089f6b92e7ede2b45a379e1e393ef5e
   - dhall-1.19.1@sha256:071e99c9d220c1a8ba9333ecc7b3838e804545b522393b4f11652bd46f62358c
   - ansi-terminal-0.6.3.1@sha256:bd858414c12857a368adc624639027eb0a680502af3019989d3ac39c155930f3
   - cborg-0.2.1.0@sha256:6e2c9a4dc3ccd621d799689d6c3ff862c761ffbab4da104874ba04a14c60ac7a
