@@ -40,7 +40,7 @@ instance Dh.Interpret ConfigServer
 
 data ConfigTelegram = ConfigTelegram {
   token   :: String  
-, chat_id :: Dh.Natural
+, chat_id :: Integer
 } deriving (Generic, Show)
 instance Dh.Interpret ConfigTelegram
 
